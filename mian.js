@@ -58,7 +58,7 @@ let job4 = schedule.scheduleJob("0 22 * * *", function () {
 bot.use(textBot);
 const start = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {});
+    // await mongoose.connect(process.env.MONGO_URI, {});
     console.log("Подключение к базе данных успешно");
 
     await bot.launch();
