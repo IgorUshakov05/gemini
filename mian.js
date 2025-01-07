@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { Telegraf } = require("telegraf");
 const mongoose = require("mongoose");
-const { save_user } = require("./database/Users");
+// const { save_user } = require("./database/Users");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const { sendMessage, motivation } = require("./bot/sendMessageToChanel");
 const textBot = require("./bot/text");
@@ -11,9 +11,9 @@ bot.start(async (ctx) => {
     let { id, username, first_name } = ctx.from;
     // let saveUser = await save_user({ id, user_name: username, first_name });
     // if (!saveUser.success) {
-    // ctx.reply("Произошла ошибка при сохранении пользователя");
+      // ctx.reply("Произошла ошибка при сохранении пользователя");
     // }
-    ctx.reply("Приве!");
+    ctx.reply("Привет!");
   } catch (e) {
     console.log(e);
     ctx.reply("Что-то пошло не так!");
@@ -37,6 +37,8 @@ async function sendToChanelFunction() {
 let job = schedule.scheduleJob("0 */3 * * *", function () {
   sendToChanelFunction(bot);
 });
+sendToChanelFunction(bot);
+
 let job1 = schedule.scheduleJob("0 6 * * *", function () {
   motivation(bot);
 });
@@ -58,7 +60,7 @@ let job4 = schedule.scheduleJob("0 22 * * *", function () {
 bot.use(textBot);
 const start = async () => {
   try {
-    // await mongoose.connect(process.env.MONGO_URI, {});
+    await mongoose.connect(process.env.MONGO_URI, {});
     console.log("Подключение к базе данных успешно");
 
     await bot.launch();
