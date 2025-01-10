@@ -3,7 +3,11 @@ const { Telegraf } = require("telegraf");
 // const mongoose = require("mongoose");
 // const { save_user } = require("./database/Users");
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const { sendMessage, motivation } = require("./bot/sendMessageToChanel");
+const {
+  sendMessage,
+  motivation,
+  sendEndWords,
+} = require("./bot/sendMessageToChanel");
 const textBot = require("./bot/text");
 const schedule = require("node-schedule");
 bot.start(async (ctx) => {
@@ -41,6 +45,7 @@ sendToChanelFunction(bot);
 
 let job1 = schedule.scheduleJob("0 6 * * *", function () {
   motivation(bot);
+  sendEndWords(bot);
 });
 
 // Расписание для 12 дня

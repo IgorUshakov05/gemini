@@ -45,6 +45,38 @@ async function montivationOnDay() {
   }
 }
 
+async function engWord() {
+  try {
+    // Выбираем модель Gemini
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    let prompt = `Generate a JSON object with 5 random English words from different categories, including IT, business, and everyday conversation, along with their Russian translations. Make sure the words are not basic or too simple. Format it for Telegram as follows:
+    {
+      "words": [
+        {"word": "algorithm", "translation": "алгоритм"},
+        {"word": "startup", "translation": "стартап"},
+        {"word": "browser", "translation": "браузер"},
+        {"word": "feedback", "translation": "отзыв"},
+        {"word": "innovation", "translation": "инновация"}
+      ]
+    }`;
+
+    // Генерация контента с использованием модели
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = await response.text();
+    let parsedResponse;
+    parsedResponse = text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
+
+    const validatedResponse = JSON.parse(parsedResponse);
+    console.log(validatedResponse);
+    return { success: true, message: validatedResponse };
+  } catch (e) {
+    console.log(e);
+    return { success: false, message: e };
+  }
+}
+
 async function say(useText) {
   try {
     // Выбираем модель Gemini
@@ -66,4 +98,4 @@ async function say(useText) {
   }
 }
 
-module.exports = { chaenl, say, montivationOnDay };
+module.exports = { chaenl, say, montivationOnDay, engWord };

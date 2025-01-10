@@ -1,4 +1,4 @@
-const { chaenl, montivationOnDay } = require("../ai/gemini");
+const { chaenl, montivationOnDay, engWord } = require("../ai/gemini");
 const generate = require("../bot/themes");
 const sendMessage = async (bot) => {
   try {
@@ -31,4 +31,25 @@ const motivation = async (bot) => {
   }
 };
 
-module.exports = { sendMessage,motivation };
+const sendEndWords = async (bot) => {
+  try {
+    let gimini = await engWord();
+    const message = gimini.message.words
+      .map(
+        (item, index) => `${index + 1}. *${item.word}* — ${item.translation}`
+      )
+      .join("\n");
+
+    let sendMessage = await bot.telegram.sendMessage(
+      process.env.CHANEL_ID_END,
+      message,
+      { parse_mode: "Markdown" }
+    );
+    return { success: true };
+  } catch (e) {
+    console.log(e);
+    return { success: false, message: e };
+  }
+};
+
+module.exports = { sendMessage, motivation, sendEndWords };
